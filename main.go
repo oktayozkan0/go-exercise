@@ -14,5 +14,11 @@ func main() {
 		Name:        "DONNIE",
 		AttackPower: 50,
 	}
-	fmt.Printf("player name: %s - attack power: %d", player.Name, player.AttackPower)
+	killPlayer(&player)
+	fmt.Printf("Player: %s, Health: %d\n", player.Name, player.Health)
+}
+
+func killPlayer(p *Player) {
+	p.Health = 0
+	fmt.Printf("Player %s is dead\n", p.Name)
 }
