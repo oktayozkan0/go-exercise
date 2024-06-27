@@ -8,17 +8,17 @@ type Player struct {
 	AttackPower int
 }
 
+func (p *Player) die() {
+	fmt.Printf("Killing player %s\n", p.Name)
+	p.Health = 0
+}
+
 func main() {
 	player := Player{
 		Health:      100,
 		Name:        "DONNIE",
 		AttackPower: 50,
 	}
-	killPlayer(&player)
+	player.die()
 	fmt.Printf("Player: %s, Health: %d\n", player.Name, player.Health)
-}
-
-func killPlayer(p *Player) {
-	p.Health = 0
-	fmt.Printf("Player %s is dead\n", p.Name)
 }
