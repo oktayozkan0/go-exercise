@@ -2,6 +2,17 @@ package main
 
 import "fmt"
 
+type Player struct {
+	Health      int
+	Name        string
+	AttackPower int
+}
+
 func main() {
-	fmt.Println("Hello world!")
+	player := Player{
+		Health:      100,
+		Name:        "DONNIE",
+		AttackPower: 50,
+	}
+	fmt.Printf("player name: %s - attack power: %d", player.Name, player.AttackPower)
 }
