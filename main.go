@@ -3,9 +3,17 @@ package main
 import "fmt"
 
 type Player struct {
-	Health      int
 	Name        string
+	Health      uint32
 	AttackPower int
+}
+
+func NewPlayer(name string, hp uint32, ap int) *Player {
+	return &Player{
+		Name:        name,
+		Health:      hp,
+		AttackPower: ap,
+	}
 }
 
 func (p *Player) die() {
@@ -14,11 +22,7 @@ func (p *Player) die() {
 }
 
 func main() {
-	player := Player{
-		Health:      100,
-		Name:        "DONNIE",
-		AttackPower: 50,
-	}
+	player := NewPlayer("DONNIE", 100, 50)
 	player.die()
 	fmt.Printf("Player: %s, Health: %d\n", player.Name, player.Health)
 }
