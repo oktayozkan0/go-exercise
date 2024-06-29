@@ -35,15 +35,20 @@ func (g *Game) addPlayer(p *Player) {
 
 func (g *Game) gameLoop() {
 	interval := time.Second
-	fmt.Println("Game is running")
+	ticker := time.NewTicker(interval)
+
+running:
 	for {
 		select {
 		case <-g.quitCh:
-			break
+			break running
 		case <-g.pauseCh:
 			g.isPaused = true
+		case <-ticker.C:
+			fmt.Println("game is running")
 		}
 	}
+	fmt.Println("game quitted by quitGame")
 }
 
 type Player struct {
@@ -71,5 +76,12 @@ func main() {
 	playerB := NewPlayer("DARCO", 100, 50)
 	game.addPlayer(playerA)
 	game.addPlayer(playerB)
+
+	go quitGame(game.quitCh)
 	game.Start()
+}
+
+func quitGame(quitCh chan bool) {
+	time.Sleep(time.Second * 5)
+	quitCh <- true
 }
