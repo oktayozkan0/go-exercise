@@ -1,6 +1,50 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
+
+type Game struct {
+	isRunning bool
+	isPaused  bool
+	players   map[string]*Player
+	quitCh    chan bool
+	pauseCh   chan bool
+}
+
+func NewGame() *Game {
+	return &Game{
+		isRunning: false,
+		isPaused:  false,
+		players:   make(map[string]*Player),
+		quitCh:    make(chan bool),
+		pauseCh:   make(chan bool),
+	}
+}
+
+func (g *Game) Start() {
+	g.isRunning = true
+	g.gameLoop()
+}
+
+func (g *Game) addPlayer(p *Player) {
+	g.players[p.Name] = p
+	fmt.Printf("Added new player: %s\n", p.Name)
+}
+
+func (g *Game) gameLoop() {
+	interval := time.Second
+	fmt.Println("Game is running")
+	for {
+		select {
+		case <-g.quitCh:
+			break
+		case <-g.pauseCh:
+			g.isPaused = true
+		}
+	}
+}
 
 type Player struct {
 	Name        string
@@ -22,7 +66,10 @@ func (p *Player) die() {
 }
 
 func main() {
-	player := NewPlayer("DONNIE", 100, 50)
-	player.die()
-	fmt.Printf("Player: %s, Health: %d\n", player.Name, player.Health)
+	game := NewGame()
+	playerA := NewPlayer("DONNIE", 100, 50)
+	playerB := NewPlayer("DARCO", 100, 50)
+	game.addPlayer(playerA)
+	game.addPlayer(playerB)
+	game.Start()
 }
